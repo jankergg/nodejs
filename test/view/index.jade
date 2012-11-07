@@ -2,7 +2,7 @@
 html(lang="en")
   head
     title= title
-    script(src='http://'+ domain + ':3000/socket.io/socket.io.js')
+    script(src='js/socket.js')
     script(type='text/javascript')
       var socket;
       socket =  io.connect('http://192.168.100.178:3000');
@@ -12,13 +12,11 @@ html(lang="en")
         socket.emit('my other event', { my: 'data' });
       });
   body
-    h1 Wayne WebSocket Demo using Socket.io
+    h1 WebSocket Demo using Socket.io
     #container
       - if (youAreUsingJade)
         p You are amazing
       - else
         p Get on it!
 
-    p Powered By a(href='http://socket.io') Socket.io
-
-    footer Copyright©2011 http://wayneye.com
+    p Powered By a(href='') Socket.io

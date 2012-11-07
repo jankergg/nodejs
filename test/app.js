@@ -26,7 +26,7 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
     res.render('index', {
-        title: 'Wayne Express Hello World',
+        title: 'Express Hello World',
         youAreUsingJade: true,
         domain: '192.168.100.178'
     });
