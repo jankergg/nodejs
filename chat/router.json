@@ -1,0 +1,7 @@
+{
+	"/hi": {
+        "template": "hi.html",
+		"render":false,
+        "data": "index"
+    }
+}
