@@ -15,7 +15,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(express.errorHandler({ dumpExceptions: false, showStack: false }));
 });
 
 app.configure('production', function(){
@@ -26,7 +26,15 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
     res.render('index', {
-        title: 'Express Hello World',
+        title: 'Express index',
+        youAreUsingJade: true,
+        domain: '192.168.100.178'
+    });
+});
+
+app.get('/sub', function(req, res){
+    res.render('subpage', {
+        title: 'Express subpage',
         youAreUsingJade: true,
         domain: '192.168.100.178'
     });
@@ -36,8 +44,8 @@ app.listen(3000);
 console.log("Express server listening on port 3000 in %s mode", app.settings.env);
 
 io.sockets.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-        console.log(data);
+    socket.on('keypress', function (data) {
+        console.log(data,"----");
+        io.sockets.emit('getmsg',{key:data});
     });
 });

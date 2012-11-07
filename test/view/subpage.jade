@@ -4,24 +4,26 @@ html(lang="en")
     title= title
     script(type='text/javascript')
       var socket = io.connect('http://192.168.100.178:3000');
+
+      //var socket = io.connect('http://localhost:3000');
       socket.on('connect', function () {
-        $("#ipt-set").keyup(function(){
-          var keyval = $('#ipt-set').val();
-          socket.emit('keypress', keyval);
+        socket.on('getmsg', function (getmsg) {
+          $("#ipt-get").val(getmsg.key)
         });
       });
 
 
   body
-    h1 WebSocket+express index
+    h1 WebSocket+express subpage
     #container
       - if (youAreUsingJade)
-        p 这里写入数据
+        p 这里读出数据
       - else
         p oooooooooooooooooooooooooooooooooo
+
     div
-      input(type='button',value='设置name',id='btn-set')
-      input(type='text',value='',id='ipt-set',placeholder='默认为null~')
+      input(type='button',value='获取name',id='btn-get')
+      input(type='text',value='',id='ipt-get')
     <br/>
     <br/>
     <br/>
