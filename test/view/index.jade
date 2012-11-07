@@ -6,7 +6,6 @@ html(lang="en")
     script(type='text/javascript')
       var socket;
       socket =  io.connect('http://192.168.100.178:3000');
-
       socket.on('news', function (data) {
         console.log(data);
         socket.emit('my other event', { my: 'data' });
@@ -19,4 +18,7 @@ html(lang="en")
       - else
         p Get on it!
 
-    p Powered By a(href='') Socket.io
+    p Powered By
+      a(href='http://socket.io') Socket.io
+
+    footer Copyright©2011
