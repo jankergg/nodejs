@@ -1,7 +1,25 @@
 var express = require('express');
 
-var app = module.exports = express.createServer(),
+var app = express.createServer(),
     io = require('socket.io').listen(app);
+
+var db = require('mongoskin').db('admin:admin@localhost:27017/testdb',{safe:false});
+
+/*db.collection('user').find().toArray(function(err, result) {
+    if (err) throw err;
+    console.log(result);
+});*/
+
+var us =  db.collection('user');
+
+us.find({}, function(err, result) {
+    result.each(function(err, data) {
+        console.log(data);
+    });
+});
+us.remove({x:0});
+
+
 
 // Configuration
 app.configure(function(){
