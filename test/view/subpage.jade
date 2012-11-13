@@ -5,25 +5,36 @@ html(lang="en")
     script(type='text/javascript')
       var socket = io.connect('http://192.168.100.178:3000');
 
-      //var socket = io.connect('http://localhost:3000');
       socket.on('connect', function () {
-        socket.on('getmsg', function (getmsg) {
-          $("#ipt-get").val(getmsg.key)
+
+        socket.on('printf', function (data) {
+          $("p#contents").text(data)
         });
       });
 
-
   body
-    h1 WebSocket+express subpage
+    h1=title
     #container
       - if (youAreUsingJade)
-        p 这里读出数据
+        p 数据查询
       - else
         p oooooooooooooooooooooooooooooooooo
 
-    div
-      input(type='button',value='获取name',id='btn-get')
-      input(type='text',value='',id='ipt-get')
+      div
+        索引：
+        input(type='text',value='',id='ipt-getid',placeholder='按_id查询')
+        br
+        键名：
+        input(type='text',value='',id='ipt-getname',placeholder='按键名查询')
+        br
+        键值：
+        input(type='text',value='',id='ipt-getval',placeholder='按键值查询')
+        br
+        input(type='button',value='查询',id='btn-get')
+        br
+        br
+        p#contents
+          暂无内容
     <br/>
     <br/>
     <br/>

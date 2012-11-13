@@ -5,28 +5,45 @@ html(lang="en")
     script(type='text/javascript')
       var socket = io.connect('http://192.168.100.178:3000');
       socket.on('connect', function () {
-        $("#ipt-set").keyup(function(){
-          var keyval = $('#ipt-set').val();
-          socket.emit('keypress', keyval);
+        $("#btn-set").click(function(){
+          var $id = $('#ipt-setid').val(),$name = $('#ipt-setname').val(),$val = $('#ipt-setval').val();
+            if($name!==""&&$val!==""){
+            if($id==""){
+            socket.emit("_submit",{__sn:$name,__sv:$val})
+            }else{
+            socket.emit("_submit",{__id:$id,__sn:$name,__sv:$val})
+            }
+            }
+          $("#sub").reset()
         });
+
+        socket.on("_error",function(data){
+          alert(data)
+        })
       });
 
 
   body
-    h1 WebSocket+express index
+
     #container
+      h1=title
       - if (youAreUsingJade)
-        p 这里写入数据
+        p 数据存存储
       - else
         p oooooooooooooooooooooooooooooooooo
-    div
-      input(type='button',value='设置name',id='btn-set')
-      input(type='text',value='',id='ipt-set',placeholder='默认为null~')
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
+      div
+        form#sub
+          索引：
+          input(type='text',value='',id='ipt-setid',placeholder='可不填，会自动生成')
+          br
+          键名：
+          input(type='text',value='',id='ipt-setname')
+          br
+          键值：
+          input(type='text',value='',id='ipt-setval')
+          br
+          input(type='button',value='提交',id='btn-set')
+
     p Powered By &nbsp;
       a(href='http://socket.io') Socket.io
 
