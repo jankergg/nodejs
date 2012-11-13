@@ -14,12 +14,24 @@ html(lang="en")
             socket.emit("_submit",{__id:$id,__sn:$name,__sv:$val})
             }
             }
-          $("#sub").reset()
+            $('#ipt-setid').val("");
+            $('#ipt-setname').val("");
+            $('#ipt-setval').val("");
         });
 
         socket.on("_error",function(data){
           alert(data)
         })
+
+        socket.on("_printf",function(data){
+
+          var txt = "数据存储成功!<br/>";
+          for(var i in data){
+            txt+=i+":"+data[i]+"<br/>";
+          }
+          $("p#res").html(txt);
+        })
+
       });
 
 
@@ -28,7 +40,10 @@ html(lang="en")
     #container
       h1=title
       - if (youAreUsingJade)
-        p 数据存存储
+        p
+          数据存存储&nbsp;
+          a(href='/sub')
+            查询
       - else
         p oooooooooooooooooooooooooooooooooo
       div
@@ -43,6 +58,8 @@ html(lang="en")
           input(type='text',value='',id='ipt-setval')
           br
           input(type='button',value='提交',id='btn-set')
+
+          p#res
 
     p Powered By &nbsp;
       a(href='http://socket.io') Socket.io

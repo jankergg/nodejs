@@ -5,13 +5,14 @@ var app = express.createServer(),
 
 var db = require('mongoskin').db('admin:admin@localhost:27017/testdb',{safe:false});
 
-db.collection('user').find().toArray(function(err, result) {
+/*db.collection('user').find({name:"city"}).toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
-});
+});*/
 
 var us =  db.collection('user');
-us.remove({name:"QQ"});
+
+
 // Configuration
 app.configure(function(){
     app.set('views', __dirname + '/view');
@@ -53,14 +54,18 @@ app.listen(3000);
 console.log("Express server listening on port 3000 in %s mode", app.settings.env);
 
 io.sockets.on('connection', function (socket) {
+    var socket = socket;
+
     socket.on('_submit', function (data) {
+        var _result = {};
         us.find().toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
-            for(var i=0;i<result.length;++i){
+            for(var i=0;i<result.length;i++){
                 var _this = result[i];
                 if(_this._id==data.__id){
-                    io.sockets.emit('_error',"索引值重复!");
+                    socket.emit('_error',"索引值重复!");
+                    _result.id=_this._id;
                     return false
                 }
             }
@@ -69,8 +74,21 @@ io.sockets.on('connection', function (socket) {
             }else{
                 us.insert({name:data.__sn,value:data.__sv});
             }
+            _result._id=(!!data.__id)?data.__id:undefined;
+            _result.name=data.__sn;
+            _result.value=data.__sv;
 
-            io.sockets.emit('printf',result);
+            socket.emit("_printf",_result);
         });
+    });
+
+    socket.on('_search', function (data) {
+
+        us.find(data).toArray(function(err, result) {
+            if (err) throw err;
+            //console.log(result);
+            socket.emit("_printfResult",result);
+        });
+
     });
 });
