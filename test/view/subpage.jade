@@ -9,15 +9,9 @@ html(lang="en")
 
         $("#btn-get").click(function(){
         var $id = $("#ipt-getid").val(),$name = $("#ipt-getname").val(),$val = $("#ipt-getval").val(),opts={};
-        if(!!$id){
-          opts._id = $id;
-        }
-        if(!!$name){
-          opts.name = $name;
-        }
-        if(!!$val){
-          opts.value = $val;
-        }
+        opts._id =(!!$id)?$id:undefined;
+        opts.name =(!!$name)?$name:undefined;
+        opts.value =(!!$val)?$val:undefined;
         if(!!$id||!!$name||!!$val){
           socket.emit("_search",opts)
         }else{
@@ -49,15 +43,9 @@ html(lang="en")
 
         $("#btn-del").click(function(){
           var $id = $("#ipt-getid").val(),$name = $("#ipt-getname").val(),$val = $("#ipt-getval").val(),opts={};
-            if(!!$id){
-            opts._id = $id;
-            }
-            if(!!$name){
-            opts.name = $name;
-            }
-            if(!!$val){
-            opts.value = $val;
-            }
+            opts._id =(!!$id)?$id:undefined;
+            opts.name =(!!$name)?$name:undefined;
+            opts.value =(!!$val)?$val:undefined;
             if(!!$id||!!$name||!!$val){
             socket.emit("_del",opts)
             }else{

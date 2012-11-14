@@ -71,7 +71,6 @@ io.sockets.on('connection', function (socket) {
             }
 
             us.insert({_id:(!!data.__id)?data.__id:undefined,name:data.__sn,value:data.__sv});
-
             _result._id=data.__id;
             _result.name=data.__sn;
             _result.value=data.__sv;
@@ -91,6 +90,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on('_del', function (data) {
+        if(!!data._id||!!data.name||!!data.value)
         us.remove(data);
         socket.emit("_printfResultDEL","删除完毕！");
     });
