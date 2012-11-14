@@ -26,7 +26,7 @@ html(lang="en")
         });
 
         socket.on('_printfResult',function (data) {
-        console.log(data.length)
+        //console.log(data.length)
           if(data.length==0){
             $("p#contents").html("没有符合条件的查询!");
             return false
@@ -46,6 +46,29 @@ html(lang="en")
           $("#ipt-getval").val("");
           $('p#contents').text("暂无内容")
         })
+
+        $("#btn-del").click(function(){
+          var $id = $("#ipt-getid").val(),$name = $("#ipt-getname").val(),$val = $("#ipt-getval").val(),opts={};
+            if(!!$id){
+            opts._id = $id;
+            }
+            if(!!$name){
+            opts.name = $name;
+            }
+            if(!!$val){
+            opts.value = $val;
+            }
+            if(!!$id||!!$name||!!$val){
+            socket.emit("_del",opts)
+            }else{
+            alert("请输入条件！")
+            }
+        })
+
+        socket.on('_printfResultDEL',function (tip) {
+          $("p#contents").html(tip);
+          $("#btn-cls").click()
+        });
 
       });
 
@@ -70,7 +93,10 @@ html(lang="en")
         input(type='text',value='',id='ipt-getval',placeholder='按键值查询')
         br
         input(type='button',value='查询',id='btn-get')
+        &nbsp;&nbsp;
         input(type='button',value='清空',id='btn-cls')
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        input(type='button',value='删除',id='btn-del')
         br
         br
         p#contents

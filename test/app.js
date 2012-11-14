@@ -58,23 +58,21 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('_submit', function (data) {
         var _result = {};
+        console.log(data.__id)
         us.find().toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
             for(var i=0;i<result.length;i++){
-                var _this = result[i];
-                if(_this._id==data.__id){
+                if(result[i]._id==data.__id){
                     socket.emit('_error',"索引值重复!");
-                    _result.id=_this._id;
+                    _result.id=result[i]._id;
                     return false
                 }
             }
-            if(!!data.__id){
-                us.insert({_id:data.__id,name:data.__sn,value:data.__sv});
-            }else{
-                us.insert({name:data.__sn,value:data.__sv});
-            }
-            _result._id=(!!data.__id)?data.__id:undefined;
+
+            us.insert({_id:(!!data.__id)?data.__id:undefined,name:data.__sn,value:data.__sv});
+
+            _result._id=data.__id;
             _result.name=data.__sn;
             _result.value=data.__sv;
 
@@ -90,5 +88,10 @@ io.sockets.on('connection', function (socket) {
             socket.emit("_printfResult",result);
         });
 
+    });
+
+    socket.on('_del', function (data) {
+        us.remove(data);
+        socket.emit("_printfResultDEL","删除完毕！");
     });
 });

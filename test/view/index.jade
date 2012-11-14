@@ -8,11 +8,7 @@ html(lang="en")
         $("#btn-set").click(function(){
           var $id = $('#ipt-setid').val(),$name = $('#ipt-setname').val(),$val = $('#ipt-setval').val();
             if($name!==""&&$val!==""){
-            if($id==""){
-            socket.emit("_submit",{__sn:$name,__sv:$val})
-            }else{
             socket.emit("_submit",{__id:$id,__sn:$name,__sv:$val})
-            }
             }
             $('#ipt-setid').val("");
             $('#ipt-setname').val("");
