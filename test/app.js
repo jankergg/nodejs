@@ -5,13 +5,12 @@ var app = express.createServer(),
 
 var db = require('mongoskin').db('admin:admin@localhost:27017/testdb',{safe:false});
 
-/*db.collection('user').find({name:"city"}).toArray(function(err, result) {
+db.collection('user').find({name:"city"}).toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
-});*/
+});
 
 var us =  db.collection('user');
-
 
 // Configuration
 app.configure(function(){
@@ -58,7 +57,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('_submit', function (data) {
         var _result = {};
-        console.log(data.__id)
+        //console.log(data.__id)
         us.find().toArray(function(err, result) {
             if (err) throw err;
             console.log(result);
