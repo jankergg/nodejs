@@ -5,10 +5,12 @@ var app = express.createServer(),
 
 var db = require('mongoskin').db('admin:admin@localhost:27017/testdb',{safe:false});
 
+/*
 db.collection('user').find({name:"city"}).toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
 });
+*/
 
 var us =  db.collection('user');
 
@@ -44,6 +46,22 @@ app.get('/', function(req, res){
 app.get('/sub', function(req, res){
     res.render('subpage', {
         title: 'MongoDB test subpage',
+        youAreUsingJade: true,
+        domain: '192.168.100.178'
+    });
+});
+
+app.get('/login', function(req, res){
+    res.render('login', {
+        title: 'login page',
+        youAreUsingJade: true,
+        domain: '192.168.100.178'
+    });
+});
+
+app.get('/admin', function(req, res){
+    res.render('admin', {
+        title: 'Product Manager',
         youAreUsingJade: true,
         domain: '192.168.100.178'
     });
