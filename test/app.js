@@ -63,7 +63,7 @@ app.get('/admin', function(req, res){
     res.render('admin', {
         title: 'Product Manager',
         youAreUsingJade: true,
-        domain: '192.168.100.178'
+        domain: '192.168.100.178:3000'
     });
 });
 
@@ -111,4 +111,15 @@ io.sockets.on('connection', function (socket) {
         us.remove(data);
         socket.emit("_printfResultDEL","删除完毕！");
     });
+
+    //设置价格
+    socket.on('_setprice', function(data){
+        var stime = data.__st,
+            etime = data.__et,
+            pid   = data.__id;
+        us.find({id:__id}).toArray(function(err, result){
+            socket.emit("send_pid",result)
+        })
+    })
+
 });

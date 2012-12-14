@@ -3,17 +3,24 @@ html(lang="en")
   head
     title= title
     script(type='text/javascript')
-      var socket = io.connect('http://192.168.100.178:3000');
+    script(type='text/javascript')
+      var socket = io.connect('http://'192.168.100.178':3000');
       socket.on('connect', function () {
         $("#btn-set").click(function(){
           var $stime = $('#starttime').val(),$etime = $('#endtime').val(),$pid = $('#pid').val();
             if($etime!==""&&$pid!==""){
-            socket.emit("_setprice",{__st:$stime,__et:$etime,__id:$pid})
+              socket.emit("_setprice",{__st:$stime,__et:$etime,__id:$pid})
             }
             $('#starttime').val("");
             $('#endtime').val("");
             $('#pid').val("");
         });
+
+      socket.on('send_pid',function(result){
+        var pid_+(new Date()).getTime() = new Timer(result.stime,"timeshow",function(){alert("time out")
+        $('span#pname').html(result.pname);
+        $('span#prise').html(result.prise);
+      })
 
 
       });
@@ -42,6 +49,12 @@ html(lang="en")
           input(type='button',value='提交',id='btn-set')
 
           p#res
+            span#timeshow
+            br
+            商品：span#pname
+            br
+            价格：span#prise
+
 
     p Powered By &nbsp;
       a(href='http://socket.io') Socket.io
