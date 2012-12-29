@@ -4,27 +4,34 @@ html(lang="en")
     title= title
     script(type='text/javascript')
     script(type='text/javascript')
-      var socket = io.connect('http://'192.168.100.178':3000');
+      var socket = io.connect('http://192.168.100.178:3000');
       socket.on('connect', function () {
+        console.log("connected!")
         $("#btn-set").click(function(){
           var $stime = $('#starttime').val(),$etime = $('#endtime').val(),$pid = $('#pid').val();
-            if($etime!==""&&$pid!==""){
-              socket.emit("_setprice",{__st:$stime,__et:$etime,__id:$pid})
+            if(!!$etime && !!$pid){
+              socket.emit("_setprice",{__st:!!$stime?$stime:undefined,__et:$etime,__id:$pid})
+            }else{
+              alert("请输入必要的信息！")
             }
             $('#starttime').val("");
             $('#endtime').val("");
             $('#pid').val("");
         });
 
-      socket.on('send_pid',function(result){
-        var pid_+(new Date()).getTime() = new Timer(result.stime,"timeshow",function(){alert("time out")
-        $('span#pname').html(result.pname);
-        $('span#prise').html(result.prise);
-      })
-
-
       });
 
+      socket.on('send_pid',function(result){
+        console.log("recived!")
+        if(!!result.st && result.st>nowtime){
+          var pid_ = new Timer(result.st,"timeshow",function(){ var pid_ = new Timer(result.et,"timeshow",function(){alert("time out")}) })
+        }else{
+          var pid_ = new Timer(result.et,"timeshow",function(){alert("time out")})
+        }
+          console.log(result.ptotal[0]);
+          $('span#pname').html(result.ptotal[0].name);
+          $('span#prise').html(result.ptotal[0].value);
+        })
 
   body
 
@@ -51,12 +58,15 @@ html(lang="en")
           p#res
             span#timeshow
             br
-            商品：span#pname
+            商品：
+            span#pname
             br
-            价格：span#prise
+            价格：
+            span#prise
 
 
     p Powered By &nbsp;
       a(href='http://socket.io') Socket.io
 
+    script(src='/js/index.js')
     footer Copyright©2012 zhangJianqiang

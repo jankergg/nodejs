@@ -5,12 +5,10 @@ var app = express.createServer(),
 
 var db = require('mongoskin').db('admin:admin@localhost:27017/testdb',{safe:false});
 
-/*
-db.collection('user').find({name:"city"}).toArray(function(err, result) {
+db.collection('user').find().toArray(function(err, result) {
     if (err) throw err;
     console.log(result);
 });
-*/
 
 var us =  db.collection('user');
 
@@ -113,12 +111,12 @@ io.sockets.on('connection', function (socket) {
     });
 
     //设置价格
-    socket.on('_setprice', function(data){
+    socket.on('_setprice', function (data) {
         var stime = data.__st,
             etime = data.__et,
             pid   = data.__id;
-        us.find({id:__id}).toArray(function(err, result){
-            socket.emit("send_pid",result)
+        us.find({_id:data.__id}).toArray(function(err, result){
+            socket.emit("send_pid",{ptotal:result,st:!!stime?stime:undefined,et:etime,pid:pid})
         })
     })
 
